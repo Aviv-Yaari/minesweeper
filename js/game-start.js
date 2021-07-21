@@ -39,6 +39,7 @@ function initGame() {
   renderLives(3);
   renderHints(3);
   renderSafeClicks(0);
+  renderManualMines(1);
 }
 
 function startGame(elCellClicked) {
@@ -48,6 +49,7 @@ function startGame(elCellClicked) {
   renderBoard(gBoard);
   activateTimer();
   renderSafeClicks(3);
+  renderManualMines(0);
 }
 
 function buildBoard(rows, cols) {

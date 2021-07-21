@@ -107,3 +107,19 @@ function renderSafeClicks(amount) {
     elSafeClicks.innerHTML += `<span class="safe-click" ${onClick}>🔎</span>`;
   }
 }
+
+function renderManualMines(amount) {
+  const elManualMines = document.querySelector('.manual-mines');
+  let onClick = '';
+  elManualMines.innerHTML = '';
+  for (let i = 0; i < amount; i++) {
+    if (!gGame.isPeeking && gGame.isOn) {
+      onClick = 'onclick=startSafeClickMode()';
+    }
+    elManualMines.innerHTML += `<span
+    class="manual-mine"
+    draggable="true"
+    ondragstart="manualMineDragStart(event, this)"
+    ondragend="manualMineDragEnd(event, this)">🧨</span>`;
+  }
+}
