@@ -17,7 +17,18 @@ function pageLoad() {
 }
 
 function initGame() {
-  gGame = { isOn: false, isOver: false, secsPassed: 0, score: 0, lives: 3, isPeeking: false };
+  gGame = {
+    isOn: false,
+    isOver: false,
+    secsPassed: 0,
+    score: 0,
+    lives: 3,
+    hints: 3,
+    safeClicks: 3,
+    isHintMode: false,
+    isPeeking: false,
+  };
+
   gLevel = getSelectedLevel();
   clearInterval(gIntervalTimer);
   gBoard = buildBoard(gLevel.size, gLevel.size);
@@ -26,6 +37,8 @@ function initGame() {
   renderTimer(0);
   renderLogo('ACTIVE');
   renderLives(3);
+  renderHints(3);
+  renderSafeClicks(0);
 }
 
 function startGame(elCellClicked) {
@@ -34,6 +47,7 @@ function startGame(elCellClicked) {
   setMinesNegsCount(gBoard);
   renderBoard(gBoard);
   activateTimer();
+  renderSafeClicks(3);
 }
 
 function buildBoard(rows, cols) {
@@ -71,6 +85,13 @@ function placeMines(board, elCellClicked) {
   //  doesn't get randomized twice)
   const { row: clickedRow, col: clickedCol } = getCellFromElement(elCellClicked, board);
   const boardPositions = [];
+  // find mines that were already manually assigned:
+  const elMines = findManuallyAssignedMines();
+  console.log('elMines', elMines);
+  if (elMines.length) {
+    placeAssignedMines(elMines, board);
+    return;
+  }
 
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
@@ -107,5 +128,23 @@ function setMinesNegsCount(board) {
       const minesNegsCount = cellNegsIndexes.filter((cell) => board[cell.i][cell.j].isMine).length;
       cell.minesAroundCount = minesNegsCount;
     }
+  }
+}
+
+function findManuallyAssignedMines() {
+  const res = [];
+  const elCells = document.querySelectorAll('.cell');
+  for (const elCell of elCells) {
+    if (elCell.textContent === MINE) {
+      res.push(elCell);
+    }
+  }
+  return res;
+}
+
+function placeAssignedMines(elMines, board) {
+  for (const elMine of elMines) {
+    const { cell } = getCellFromElement(elMine, board);
+    cell.isMine = true;
   }
 }

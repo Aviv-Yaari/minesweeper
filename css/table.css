@@ -17,24 +17,3 @@ td {
   height: 50px;
   text-align: center;
 }
-
-.cell:hover {
-  cursor: pointer;
-  background-color: rgb(210, 205, 212);
-  transition: background-color 100ms ease-in-out;
-}
-
-.cell.shown {
-  cursor: default;
-  background-color: rgb(210, 205, 212);
-}
-
-.cell.disabled:hover {
-  cursor: default;
-  background-color: inherit;
-}
-
-.cell.shown:hover {
-  cursor: default;
-  background-color: rgb(210, 205, 212);
-}

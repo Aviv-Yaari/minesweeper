@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/cell.css">
     <title>Minesweeper</title>
 </head>
 
@@ -19,8 +20,9 @@
     </header>
     <main>
         <section class="menu">
-            <span class="lives"></span>
-            <span class="logo" onclick="initGame()"></span>
+            <div class="hints"></div>
+            <div class="lives"></div>
+            <div class="logo" onclick="initGame()"></div>
             <div>
                 <div>Time:</div>
                 <span class="timer">0</span>
@@ -32,12 +34,20 @@
         </section>
         <div class="table-container">
         </div>
+        <section class="menu">
+            <div class="safe-clicks"></div>
+            <div class="manual-mines">
+                <span class="manual-mine" draggable="true" ondragstart="manualMineDragStart(event, this)"
+                    ondragend="manualMineDragEnd(event, this)">🧨</span>
+            </div>
+        </section>
     </main>
     <footer>
         <span>Aviv Yaari, 2021</span>
     </footer>
     <script src="js/game-start.js"></script>
     <script src="js/add-features.js"></script>
+    <script src="js/manual-mines.js"></script>
     <script src="js/renders.js"></script>
     <script src="js/cell.js"></script>
     <script src="js/game-over.js"></script>

@@ -1,15 +1,20 @@
 function renderBoard(board) {
   // debugger;
-  let strHTML = '<table border="0"><tbody>';
+  const disabledClass = gGame.isOver || gGame.isPeeking ? 'disabled' : '';
+  const colorClasses = ['', 'blue', 'green', 'red', 'darkblue'];
+  let strHTML = '<table class="board" border="0"><tbody>';
   for (let i = 0; i < board.length; i++) {
     strHTML += '<tr>';
     for (let j = 0; j < board[0].length; j++) {
       const cell = board[i][j];
       const cellDisplay = getCellDisplay(cell);
       const shownClass = cell.isShown ? 'shown' : '';
-      strHTML += `<td class="cell ${shownClass}" data-row="${i}" data-col="${j}" 
+      const colorClass = !cell.isMarked && !cell.isMine ? colorClasses[cell.minesAroundCount] : '';
+      strHTML += `<td class="cell ${shownClass} ${disabledClass} ${colorClass}" data-row="${i}" data-col="${j}" 
       onclick="cellLeftClickHandler(this)" 
-      oncontextmenu="cellRightClickHandler(event, this)">${cellDisplay}</td>`;
+      oncontextmenu="cellRightClickHandler(event, this)"
+      ondragover="tableDragOver(event)" ondrop="tableDrop(event)"
+      >${cellDisplay}</td>`;
     }
     strHTML += '</tr>';
   }
@@ -29,7 +34,7 @@ function getCellDisplay(cell) {
     return MINE;
   }
 
-  return cell.minesAroundCount;
+  return cell.minesAroundCount === 0 ? '' : cell.minesAroundCount;
 }
 
 function renderScore(score) {
@@ -57,14 +62,6 @@ function renderLogo(type) {
   }
 }
 
-function renderLives(amount) {
-  const elLives = document.querySelector('.lives');
-  elLives.textContent = '';
-  for (let i = 0; i < amount; i++) {
-    elLives.textContent += '♥';
-  }
-}
-
 function renderTimer(time) {
   const elTimer = document.querySelector('.timer');
   elTimer.textContent = time;
@@ -80,4 +77,33 @@ function renderLevels(levels) {
       `<label for="${i}">${level.name}</label> `;
   }
   elLevelsContainer.innerHTML = strHTML;
+}
+
+function renderLives(amount) {
+  const elLives = document.querySelector('.lives');
+  elLives.textContent = '';
+  for (let i = 0; i < amount; i++) {
+    elLives.textContent += '♥';
+  }
+}
+
+function renderHints(amount) {
+  const elHints = document.querySelector('.hints');
+  elHints.innerHTML = '';
+  for (let i = 0; i < amount; i++) {
+    const onClick = !gGame.isHintMode ? 'onclick=startHintMode()' : '';
+    elHints.innerHTML += `<span class="hint" ${onClick}>💡</span>`;
+  }
+}
+
+function renderSafeClicks(amount) {
+  const elSafeClicks = document.querySelector('.safe-clicks');
+  let onClick = '';
+  elSafeClicks.innerHTML = '';
+  for (let i = 0; i < amount; i++) {
+    if (!gGame.isPeeking && gGame.isOn) {
+      onClick = 'onclick=startSafeClickMode()';
+    }
+    elSafeClicks.innerHTML += `<span class="safe-click" ${onClick}>🔎</span>`;
+  }
 }

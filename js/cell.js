@@ -5,6 +5,10 @@ function cellLeftClickHandler(elCell) {
   if (cell.isShown) return;
   if (!gGame.isOn) startGame(elCell);
   if (gGame.isPeeking) return;
+  if (gGame.isHintMode) {
+    peek(elCell, gBoard);
+    return;
+  }
 
   // actions:
   cell.isShown = true;
@@ -16,7 +20,7 @@ function cellLeftClickHandler(elCell) {
       gameOver(false);
       return;
     }
-    peek(elCell, gBoard);
+    handleLifeLost(elCell, gBoard);
     return;
   }
 
@@ -71,20 +75,37 @@ function expandShown(board, row, col) {
     cell.isShown = true;
   }
   const cellNegsIndexes = getIndexOfNegs(board, row, col);
-  // emptyNegs is an array of cells that have no mines around them,
-  // and are also not shown, marked or mines. (empty)
-  const emptyNegsIndexes = cellNegsIndexes.filter((cellIndex) => {
-    const cell = board[cellIndex.i][cellIndex.j];
-    return !cell.minesAroundCount && !cell.isShown && !cell.isMine && !cell.isMarked;
-  });
 
-  for (const emptyNegIndex of emptyNegsIndexes) {
-    const { i, j } = emptyNegIndex;
-    expandShown(board, i, j);
+  for (const cellNegIndex of cellNegsIndexes) {
+    const { i, j } = cellNegIndex;
+    const cell = board[i][j];
+    if (cell.isShown || cell.isMine || cell.isMarked) {
+      continue;
+    }
+    if (!cell.minesAroundCount) {
+      expandShown(board, i, j);
+      continue;
+    }
+    cell.isShown = true;
   }
 }
 
 function updateScore(diff) {
   gGame.score += diff;
   renderScore(gGame.score);
+}
+
+// Find cells in board
+function findCellsByKey(key, board) {
+  const res = [];
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      const currCell = board[i][j];
+      if (currCell[key]) {
+        // if this cell is marked as true for the key given
+        res.push({ i, j });
+      }
+    }
+  }
+  return res;
 }

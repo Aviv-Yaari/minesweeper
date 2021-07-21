@@ -22,7 +22,6 @@ function gameOver(isWon) {
     console.log('Lose!');
     showMines(gBoard);
   }
-  disableAllCells();
 }
 
 function showMines(board) {
@@ -32,19 +31,4 @@ function showMines(board) {
     board[i][j].isShown = true;
   }
   renderBoard(board);
-}
-
-// Find cells in board
-function findCellsByKey(key, board) {
-  const res = [];
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[i].length; j++) {
-      const currCell = board[i][j];
-      if (currCell[key]) {
-        // if this cell is marked as true for the key given
-        res.push({ i, j });
-      }
-    }
-  }
-  return res;
 }
