@@ -1,0 +1,25 @@
+.menu {
+  width: 100%;
+  height: 50px;
+  padding: 30px;
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 217, 0, 0.822);
+  margin: 10px;
+}
+
+.logo {
+  font-size: x-large;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.lives {
+  font-size: xx-large;
+  color: red;
+  width: 50px;
+}
