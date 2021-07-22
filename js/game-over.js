@@ -8,17 +8,20 @@ function checkWin(board) {
     }
   }
   gameOver(true);
-  renderLogo('WON');
   return true;
 }
 
 function gameOver(isWon) {
   gGame.isOver = true;
   clearInterval(gIntervalTimer);
-  renderLogo('LOST');
+  renderSafeClicks(0);
+  renderHints(0);
+  renderUndo(false);
   if (isWon) {
+    renderLogo('WON');
     checkWorldRecord(gLevel.name, gGame.secsPassed);
   } else {
+    renderLogo('LOST');
     showMines(gBoard);
   }
 }
