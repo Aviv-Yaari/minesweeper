@@ -17,14 +17,24 @@
   font-size: x-large;
 }
 
-.logo:hover {
-  cursor: pointer;
-}
-
 .lives {
   font-size: xx-large;
   color: red;
   width: 50px;
+}
+
+.hints {
+  width: 50px;
+}
+.undo-container {
+  width: 50px;
+}
+.safe-clicks {
+  width: 70px;
+}
+
+.logo:hover {
+  cursor: pointer;
 }
 
 .hint:hover {

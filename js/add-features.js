@@ -17,6 +17,15 @@ function startHintMode() {
   gGame.isHintMode = true;
   gGame.hints--;
   renderHints(gGame.hints);
+  renderUndo(false);
+  renderSafeClicks(0);
+}
+
+function endHintMode() {
+  gGame.isHintMode = false;
+  renderHints(gGame.hints);
+  renderUndo(true);
+  renderSafeClicks(gGame.safeClicks);
 }
 
 function startSafeClickMode() {
@@ -52,8 +61,7 @@ function peek(elCell, board) {
   setTimeout(() => {
     gGame.isPeeking = false;
     cell.isShown = false;
-    gGame.isHintMode = false;
-    renderHints(gGame.hints);
+    endHintMode();
     renderBoard(board);
   }, 1000);
 }

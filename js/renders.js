@@ -1,5 +1,4 @@
 function renderBoard(board) {
-  // debugger;
   const disabledClass = gGame.isOver || gGame.isPeeking ? 'disabled' : '';
   const colorClasses = ['', 'blue', 'green', 'red', 'darkblue'];
   let strHTML = '<table class="board" border="0"><tbody>';
@@ -19,7 +18,7 @@ function renderBoard(board) {
     strHTML += '</tr>';
   }
   strHTML += '</tbody></table>';
-  const elContainer = document.querySelector('.table-container');
+  const elContainer = document.querySelector('.board-container');
   elContainer.innerHTML = strHTML;
 }
 
@@ -44,22 +43,24 @@ function renderScore(score) {
 
 function renderLogo(type) {
   const elLogo = document.querySelector('.logo');
+  let strHTML = '<span class="tooltiptext">Start Game</span>';
   switch (type) {
     case 'LOST':
-      elLogo.textContent = '😭';
+      strHTML += '😭';
       break;
     case 'WON':
-      elLogo.textContent = '😎';
+      strHTML += '😎';
       break;
     case 'ACTIVE':
-      elLogo.textContent = '😀';
+      strHTML += '😀';
       break;
     case 'LOST LIFE':
-      elLogo.textContent = '😰';
+      strHTML += '😰';
       break;
     default:
       break;
   }
+  elLogo.innerHTML = strHTML;
 }
 
 function renderTimer(time) {
@@ -81,53 +82,73 @@ function renderLevels(levels) {
 
 function renderLives(amount) {
   const elLives = document.querySelector('.lives');
-  elLives.textContent = '';
-  for (let i = 0; i < amount; i++) {
-    elLives.textContent += '♥';
+  if (!amount) {
+    elLives.innerHTML = '';
+    return;
   }
+  let strHTML = '<span class="tooltiptext">Lives Left</span>';
+  for (let i = 0; i < amount; i++) {
+    strHTML += '♥';
+  }
+  elLives.innerHTML = strHTML;
 }
 
 function renderHints(amount) {
   const elHints = document.querySelector('.hints');
-  elHints.innerHTML = '';
+  if (!amount) {
+    elHints.innerHTML = '';
+    return;
+  }
+  let strHTML = '<span class="tooltiptext">Hints</span>';
   for (let i = 0; i < amount; i++) {
     const onClick = !gGame.isHintMode ? 'onclick=startHintMode()' : '';
-    elHints.innerHTML += `<span class="hint" ${onClick}>💡</span>`;
+    strHTML += `<span class="hint" ${onClick}>💡</span>`;
   }
+  elHints.innerHTML = strHTML;
 }
 
 function renderSafeClicks(amount) {
   const elSafeClicks = document.querySelector('.safe-clicks');
+  if (!amount) {
+    elSafeClicks.innerHTML = '';
+    return;
+  }
   let onClick = '';
-  elSafeClicks.innerHTML = '';
+  let strHTML = '<span class="tooltiptext">Safe Clicks</span>';
   for (let i = 0; i < amount; i++) {
     if (!gGame.isPeeking && gGame.isOn) {
       onClick = 'onclick=startSafeClickMode()';
     }
-    elSafeClicks.innerHTML += `<span class="safe-click" ${onClick}>🔎</span>`;
+    strHTML += `<span class="safe-click" ${onClick}>🔎</span>`;
   }
+  elSafeClicks.innerHTML = strHTML;
 }
 
 function renderManualMines(amount) {
   const elManualMines = document.querySelector('.manual-mines');
+  if (!amount) {
+    elManualMines.innerHTML = '';
+    return;
+  }
   let onClick = '';
-  elManualMines.innerHTML = '';
+  let strHTML = '<span class="tooltiptext"> Manually Assign Mines </span>';
   for (let i = 0; i < amount; i++) {
     if (!gGame.isPeeking && gGame.isOn) {
       onClick = 'onclick=startSafeClickMode()';
     }
-    elManualMines.innerHTML += `<span
+    strHTML += `<span
     class="manual-mine"
     draggable="true"
     ondragstart="manualMineDragStart(event, this)"
     ondragend="manualMineDragEnd(event, this)">🧨</span>`;
   }
+  elManualMines.innerHTML = strHTML;
 }
 
 function renderUndo(isVisible) {
   const elUndoContainer = document.querySelector('.undo-container');
   let onClick = '';
-  let strHTML = '';
+  let strHTML = '<span class="tooltiptext">Undo</span>';
   if (
     !isVisible ||
     !gGame.isOn ||

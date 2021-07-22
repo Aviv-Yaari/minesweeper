@@ -1,6 +1,4 @@
 function cellLeftClickHandler(elCell) {
-  addToHistory();
-
   // first checks:
   const { row, col, cell } = getCellFromElement(elCell, gBoard);
   if (gGame.isOver) return;
@@ -11,6 +9,7 @@ function cellLeftClickHandler(elCell) {
     peek(elCell, gBoard);
     return;
   }
+  addToHistory();
 
   // actions:
   cell.isShown = true;

@@ -17,9 +17,8 @@ function gameOver(isWon) {
   clearInterval(gIntervalTimer);
   renderLogo('LOST');
   if (isWon) {
-    console.log('Win!');
+    checkWorldRecord(gLevel.name, gGame.secsPassed);
   } else {
-    console.log('Lose!');
     showMines(gBoard);
   }
 }

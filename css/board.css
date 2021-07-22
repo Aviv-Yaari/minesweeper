@@ -1,0 +1,19 @@
+.board {
+  margin: 30px;
+  table-layout: fixed;
+  min-width: 400px;
+  min-height: 400px;
+}
+
+.board,
+.cell {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.cell {
+  /* padding: 10px; */
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}

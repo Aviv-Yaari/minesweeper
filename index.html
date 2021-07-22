@@ -7,21 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="css/cell.css">
+    <link rel="stylesheet" href="css/world-records.css">
+    <link rel="stylesheet" href="css/tooltips.css">
     <title>Minesweeper</title>
 </head>
 
 <body onload="pageLoad()">
+    <div class="overlay hidden">
+        <div class="record-modal hidden">
+            <form action="" onsubmit="submitRecord(event)">
+                <span>WOW! You Just broke the world record! What's your name??</span>
+                <input type="text" id="recordName">
+            </form>
+        </div>
+    </div>
     <header>
         <h1>Minesweeper</h1>
         <div class="levels-container">
         </div>
     </header>
     <main>
+
         <section class="menu">
-            <div class="lives"></div>
-            <div class="logo" onclick="initGame()"></div>
+            <div class="lives tooltip"></div>
+            <div class="logo tooltip" onclick="initGame()"></div>
             <div>
                 <div>Time:</div>
                 <span class="timer">0</span>
@@ -31,16 +42,22 @@
                 <span class="score">0</span>
             </div>
         </section>
-        <div class="table-container">
+        <div class="board-container">
         </div>
         <section class="menu">
-            <div class="safe-clicks"></div>
-            <div class="undo-container"></div>
-            <div class="hints"></div>
-            <div class="manual-mines"></div>
+            <div class="safe-clicks tooltip"></div>
+            <div class="undo-container tooltip"></div>
+            <div class="hints tooltip"></div>
+            <div class="manual-mines tooltip"></div>
         </section>
     </main>
     <footer>
+        <section>
+            <span>World Records: <i>(powered by firebase)</i></span>
+            <table class="records-table">
+            </table>
+
+        </section>
         <span>Aviv Yaari, 2021</span>
     </footer>
     <script src="js/game-start.js"></script>
@@ -50,6 +67,7 @@
     <script src="js/cell.js"></script>
     <script src="js/game-over.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/world-records.js"></script>
 </body>
 
 </html>

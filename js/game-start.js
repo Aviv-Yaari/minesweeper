@@ -9,6 +9,7 @@ let gLevel;
 let gBoard = [];
 let gBoardHistory = [];
 let gIntervalTimer;
+let gRecords;
 const EMPTY = '';
 const MINE = '🧨';
 const FLAG = '🚩';
@@ -16,6 +17,7 @@ const FLAG = '🚩';
 function pageLoad() {
   renderLevels(gLevels);
   initGame();
+  getWorldRecords();
 }
 
 function initGame() {
@@ -42,6 +44,7 @@ function initGame() {
   renderSafeClicks(gGame.safeClicks);
   renderManualMines(1);
   renderUndo(false);
+  hideRecordModal();
 }
 
 function startGame(elCellClicked) {
@@ -96,7 +99,6 @@ function placeMines(board, elCellClicked) {
   const boardPositions = [];
   // find mines that were already manually assigned:
   const elMines = findManuallyAssignedMines();
-  console.log('elMines', elMines);
   if (elMines.length) {
     placeAssignedMines(elMines, board);
     return;
@@ -114,7 +116,6 @@ function placeMines(board, elCellClicked) {
     const randIndex = Math.floor(Math.random() * (boardPositions.length - 1));
     const randBoardPos = boardPositions.splice(randIndex, 1)[0];
     board[randBoardPos.i][randBoardPos.j].isMine = true;
-    console.log('Mine at:', randBoardPos.i, randBoardPos.j);
   }
 }
 
