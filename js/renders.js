@@ -43,7 +43,7 @@ function renderScore(score) {
 
 function renderLogo(type) {
   const elLogo = document.querySelector('.logo');
-  let strHTML = '<span class="tooltiptext">Start Game</span>';
+  let strHTML = '';
   switch (type) {
     case 'LOST':
       strHTML += '😭';
@@ -86,7 +86,7 @@ function renderLives(amount) {
     elLives.innerHTML = '';
     return;
   }
-  let strHTML = '<span class="tooltiptext">Lives Left</span>';
+  let strHTML = '';
   for (let i = 0; i < amount; i++) {
     strHTML += '♥';
   }
