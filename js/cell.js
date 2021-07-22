@@ -1,4 +1,6 @@
 function cellLeftClickHandler(elCell) {
+  addToHistory();
+
   // first checks:
   const { row, col, cell } = getCellFromElement(elCell, gBoard);
   if (gGame.isOver) return;
@@ -12,30 +14,33 @@ function cellLeftClickHandler(elCell) {
 
   // actions:
   cell.isShown = true;
-
   if (cell.isMine) {
+    popFromHistory();
     gGame.lives--;
     renderLives(gGame.lives);
     if (!gGame.lives) {
       gameOver(false);
       return;
     }
-    handleLifeLost(elCell, gBoard);
+    peekLifeLost(elCell, gBoard);
     return;
   }
 
   //(if we reached here, we assume cell is a blank square)
   if (!cell.minesAroundCount) {
     expandShown(gBoard, row, col);
+  } else {
+    updateScore(1);
   }
-  updateScore(1);
   renderBoard(gBoard);
   checkWin(gBoard);
 }
 
 function cellRightClickHandler(event, elCell) {
-  // first checks:
   event.preventDefault();
+  addToHistory();
+
+  // first checks:
   const { cell } = getCellFromElement(elCell, gBoard);
   if (gGame.isOver) return;
   if (cell.isShown && !cell.isMarked) return;
@@ -73,6 +78,7 @@ function expandShown(board, row, col) {
   const cell = board[row][col];
   if (!cell.minesAroundCount) {
     cell.isShown = true;
+    updateScore(1);
   }
   const cellNegsIndexes = getIndexOfNegs(board, row, col);
 
@@ -87,6 +93,7 @@ function expandShown(board, row, col) {
       continue;
     }
     cell.isShown = true;
+    updateScore(1);
   }
 }
 

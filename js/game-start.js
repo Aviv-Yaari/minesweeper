@@ -1,4 +1,5 @@
 let gGame;
+let gGameHistory = [];
 const gLevels = [
   { name: 'Beginner', size: 4, mines: 2 },
   { name: 'Medium', size: 8, mines: 12 },
@@ -6,6 +7,7 @@ const gLevels = [
 ];
 let gLevel;
 let gBoard = [];
+let gBoardHistory = [];
 let gIntervalTimer;
 const EMPTY = '';
 const MINE = '🧨';
@@ -23,33 +25,38 @@ function initGame() {
     secsPassed: 0,
     score: 0,
     lives: 3,
-    hints: 3,
-    safeClicks: 3,
+    hints: 0,
+    safeClicks: 0,
     isHintMode: false,
     isPeeking: false,
   };
-
   gLevel = getSelectedLevel();
   clearInterval(gIntervalTimer);
   gBoard = buildBoard(gLevel.size, gLevel.size);
   renderBoard(gBoard);
-  renderScore(0);
-  renderTimer(0);
+  renderScore(gGame.score);
+  renderTimer(gGame.secsPassed);
   renderLogo('ACTIVE');
-  renderLives(3);
-  renderHints(3);
-  renderSafeClicks(0);
+  renderLives(gGame.lives);
+  renderHints(gGame.hints);
+  renderSafeClicks(gGame.safeClicks);
   renderManualMines(1);
+  renderUndo(false);
 }
 
 function startGame(elCellClicked) {
+  gGame.safeClicks = 3;
+  gGame.hints = 3;
   gGame.isOn = true;
   placeMines(gBoard, elCellClicked);
   setMinesNegsCount(gBoard);
+  gBoardHistory = [copyMat(gBoard)];
+  gGameHistory = [{ ...gGame }];
   renderBoard(gBoard);
   activateTimer();
-  renderSafeClicks(3);
+  renderSafeClicks(gGame.safeClicks);
   renderManualMines(0);
+  renderHints(gGame.hints);
 }
 
 function buildBoard(rows, cols) {

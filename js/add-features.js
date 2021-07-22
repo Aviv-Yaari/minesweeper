@@ -1,4 +1,4 @@
-function handleLifeLost(elCell, board) {
+function peekLifeLost(elCell, board) {
   const { cell } = getCellFromElement(elCell, board);
   gGame.isPeeking = true;
   cell.isShown = true;
@@ -56,4 +56,29 @@ function peek(elCell, board) {
     renderHints(gGame.hints);
     renderBoard(board);
   }, 1000);
+}
+
+function undo() {
+  if (gGame.isPeeking || !gGame.isOn || gGame.isOver) return;
+  if (gGameHistory.length <= 1 || gBoardHistory.length <= 1) return;
+  popFromHistory();
+  renderBoard(gBoard);
+  renderScore(gGame.score);
+  renderTimer(gGame.secsPassed);
+  renderLives(gGame.lives);
+  renderUndo(true);
+}
+
+function addToHistory() {
+  gBoardHistory.push(copyMat(gBoard));
+  gGameHistory.push({ ...gGame });
+  renderUndo(true);
+}
+
+function popFromHistory() {
+  const previousGameState = gGameHistory.splice(gGameHistory.length - 1, 1)[0];
+  const previousBoardState = gBoardHistory.splice(gBoardHistory.length - 1, 1)[0];
+  gGame = { ...gGame, score: previousGameState.score, isPeeking: false, isHintMode: false };
+  gBoard = copyMat(previousBoardState);
+  renderUndo(true);
 }

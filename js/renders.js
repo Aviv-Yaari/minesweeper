@@ -123,3 +123,23 @@ function renderManualMines(amount) {
     ondragend="manualMineDragEnd(event, this)">🧨</span>`;
   }
 }
+
+function renderUndo(isVisible) {
+  const elUndoContainer = document.querySelector('.undo-container');
+  let onClick = '';
+  let strHTML = '';
+  if (
+    !isVisible ||
+    !gGame.isOn ||
+    gGame.isOver ||
+    gBoardHistory.length <= 1 ||
+    gGameHistory.length <= 1
+  ) {
+    elUndoContainer.innerHTML = '';
+    return;
+  }
+
+  onClick = 'onclick=undo()';
+  strHTML += `<span class="undo" ${onClick}>⏪</span>`;
+  elUndoContainer.innerHTML = strHTML;
+}

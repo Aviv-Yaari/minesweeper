@@ -42,3 +42,7 @@
 .dragging {
   opacity: 0.35;
 }
+
+.undo:hover {
+  cursor: pointer;
+}
